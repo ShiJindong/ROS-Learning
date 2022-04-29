@@ -2,7 +2,7 @@
 ---
 Used ROS-Version: Melodic
 
-First:
+At first:
 
       cd ros_ws
       catkin_make
