@@ -1,0 +1,8 @@
+<launch>
+    <!-- 导出参数, 会在所有node执行之前导出 -->
+    <rosparam command="dump" file="$(find launch01_basic)/launch/params_out.yaml" />
+
+    <!--  删除参数-->
+    <rosparam command="delete" param="bg_B" />
+
+</launch>

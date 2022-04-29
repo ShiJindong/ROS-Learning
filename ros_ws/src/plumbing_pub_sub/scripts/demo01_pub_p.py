@@ -3,6 +3,23 @@
 
 import rospy
 from std_msgs.msg import String    # 发布的消息的类型
+import tools
+import os
+import sys
+
+# Noetic rosrun时 (melodic没有此种问题)，ros可能找不到引用的外部包的路径，因为它的参考路径是workspace，解决方法有两种
+
+# 方法一:
+# 设置临时环境变量
+# sys.path.insert(0, "/home/jindong/ROS/ros_ws/src/plumbing_pub_sub/scripts")
+
+# 方法二:
+# 路径写死，影响了代码的可移植性
+# 优化，可以动态获取路径
+path = os.path.abspath(".")
+rospy.loginfo("执行时参考的路径: %s",path)
+sys.path.insert(0,path + "/src/plumbing_pub_sub/scripts")
+
 
 """
     使用python实现消息发布
@@ -18,6 +35,9 @@ if __name__ == "__main__":
     rospy.init_node("sanDai")    #传入节点名称
     # 3. 创建发布者对象
     pub = rospy.Publisher("fang",String,queue_size=10)
+
+    rospy.loginfo("num = %d", tools.num)
+
     # 4. 编写发布逻辑并发布数据
     # 创建数据
     msg = String()    #空的String

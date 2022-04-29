@@ -48,6 +48,7 @@ int main(int argc, char *argv[])
 
         ros::spinOnce();    // 官方建议这么写，用来处理回调函数，但是我们这里没有回调函数，spinonce通常和while循环一起使用
         rate.sleep();
+        
     }
     
     return 0;

@@ -1,0 +1,15 @@
+bg_B: 255
+bg_G: 50
+bg_R: 100
+my_turtle: {background_b: 255, background_g: 86, background_r: 69, bg_B: 255, bg_G: 50,
+  bg_R: 100}
+rosdistro: 'melodic
+
+  '
+roslaunch:
+  uris: {host_jindong_thinkpad_x1_carbon__34135: 'http://jindong-ThinkPad-X1-Carbon:34135/',
+    host_jindong_thinkpad_x1_carbon__37391: 'http://jindong-ThinkPad-X1-Carbon:37391/'}
+rosversion: '1.14.13
+
+  '
+run_id: 7660f73e-c7dd-11ec-8f42-28b2bd01e84d

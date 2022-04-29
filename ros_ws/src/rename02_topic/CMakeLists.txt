@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(plumbing_pub_sub)
+project(rename02_topic)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -7,12 +7,10 @@ project(plumbing_pub_sub)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-## 编译时依赖
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
-  message_generation
 )
 
 ## System dependencies are found with CMake's conventions
@@ -49,10 +47,11 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-add_message_files(
-  FILES
-  Person.msg
-)
+# add_message_files(
+#   FILES
+#   Message1.msg
+#   Message2.msg
+# )
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -68,12 +67,11 @@ add_message_files(
 #   Action2.action
 # )
 
-# Generate added messages and services with any dependencies listed here
-# 生成消息时的依赖，因为复合的消息类型内部都是标准消息，所以需要依赖std_msgs
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-)
+## Generate added messages and services with any dependencies listed here
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -104,11 +102,10 @@ generate_messages(
 ## LIBRARIES: libraries you create in this project that dependent projects also need
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
-## 运行时依赖
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES plumbing_pub_sub
-  CATKIN_DEPENDS roscpp rospy std_msgs message_runtime
+#  LIBRARIES rename02_topic
+#  CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
 )
 
@@ -125,7 +122,7 @@ include_directories(
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/plumbing_pub_sub.cpp
+#   src/${PROJECT_NAME}/rename02_topic.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -136,10 +133,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(demo01_pub src/demo01_pub.cpp)
-add_executable(demo02_sub src/demo02_sub.cpp)
-add_executable(demo03_pub_person src/demo03_pub_person.cpp)
-add_executable(demo04_sub_person src/demo04_sub_person.cpp)
+add_executable(topic_name src/topic_name.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -149,22 +143,10 @@ add_executable(demo04_sub_person src/demo04_sub_person.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-# 避免源文件被编译，但是消息文件还没有被编译的情况。这里保证了msg先被编译，再编译源文件
-add_dependencies(demo03_pub_person ${PROJECT_NAME}_generate_messages_cpp)
-add_dependencies(demo04_sub_person ${PROJECT_NAME}_generate_messages_cpp)
+add_dependencies(topic_name ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(demo01_pub
-  ${catkin_LIBRARIES}
-)
-target_link_libraries(demo02_sub
-  ${catkin_LIBRARIES}
-)
-target_link_libraries(demo03_pub_person
-  ${catkin_LIBRARIES}
-)
-target_link_libraries(demo04_sub_person
+target_link_libraries(topic_name
   ${catkin_LIBRARIES}
 )
 
@@ -177,15 +159,10 @@ target_link_libraries(demo04_sub_person
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
-# 由于Noetic以后的版本只支持python3，如果不在这写上编译依赖的话，编译器会去找python2,而不是python3，会造成错误，melodic也建议如此
-catkin_install_python(PROGRAMS
-  scripts/demo01_pub_p.py
-  scripts/demo02_sub_p.py
-  scripts/demo03_pub_person_p.py
-  scripts/demo04_sub_person_p.py
-  scripts/tools.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+# catkin_install_python(PROGRAMS
+#   scripts/my_python_script
+#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+# )
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
@@ -220,7 +197,7 @@ catkin_install_python(PROGRAMS
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_plumbing_pub_sub.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_rename02_topic.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
