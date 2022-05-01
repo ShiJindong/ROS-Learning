@@ -9,7 +9,7 @@ At first:
       source devel/setup.bash
       roscore
   
-or:
+or
       
       cd tools_ws
       catkin_make
