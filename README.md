@@ -14,6 +14,6 @@ At first:
       source devel/setup.bash
       roscore
       
-Then rosrun rosnodes.
+Then rosrun rosnodes or roslaunch launch files.
 
 The executable rosnodes are implemented not only with C++ but also with Python.
