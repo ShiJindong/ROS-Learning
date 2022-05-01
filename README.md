@@ -8,6 +8,8 @@ At first:
       catkin_make
       source devel/setup.bash
       roscore
+  
+or:
       
       cd tools_ws
       catkin_make
