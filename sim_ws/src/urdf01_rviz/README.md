@@ -1,6 +1,6 @@
-1. install arbotix:
+1. install arbotix
 
-	sudo apt-get install ros-<ros version>-arbotix
+	sudo apt-get install ros-ROS version-arbotix
 
 2. in terminal enter:
 	
