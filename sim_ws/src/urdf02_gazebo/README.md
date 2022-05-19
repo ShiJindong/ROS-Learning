@@ -1,7 +1,7 @@
 1. install gazebo
 
 2. in terminal enter:
-3. 
+
 	roslaunch urdf02_gazebo demo01_helloworld.launch 
 	
 	roslaunch urdf02_gazebo demo02_car.launch
