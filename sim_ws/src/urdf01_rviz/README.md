@@ -3,7 +3,9 @@
 	sudo apt-get install ros-<ros version>-arbotix
 
 2. in terminal enter:
+	
 	roslaunch urdf01_rviz demo07_control.launch 
+	
         rostopic pub -r 10 /cmd_vel geometry_msgTwist "linear:
             x: 1.0
             y: 0.0
