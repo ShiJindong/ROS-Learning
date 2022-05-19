@@ -1,9 +1,13 @@
 1. install gazebo
 
 2. in terminal enter:
+3. 
 	roslaunch urdf02_gazebo demo01_helloworld.launch 
+	
 	roslaunch urdf02_gazebo demo02_car.launch
+	
 	roslaunch urdf02_gazebo demo03_env.launch
+	
 		=>  move control use:  	
 			rosrun teleop_twist_keyboard teleop_twist_keyboard.py _speed:=0.3 _turn:=0.5
 		=>  show movement in rviz:
