@@ -1,0 +1,43 @@
+<robot name="my_sensors" xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <!-- laser -->
+  <gazebo reference="laser">       <!-- This name "laser" is defined in file "demo07_car_laser.urdf.xacro" -->
+    <sensor type="ray" name="rplidar">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>true</visualize>
+      <update_rate>5.5</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <!-- sample point number, wenn the laser scan 360 grad -->
+            <samples>360</samples>      
+            <!-- Set N: every N laser points has a laser point, which is used to measure the distance -->
+            <!-- In real world, every laser point should measure distance, but we set this resolution N to reduce the compute pressure in simulation :) -->
+            <!-- Hier N = 1, you can also change it to a bigger value, if your computer doesn't have a strong compute power or if you use a virtuell machine -->
+            <resolution>1</resolution>  
+            <!-- laser scaner has a measure angle range: hier the unit of 3 and -3 is radian -->
+            <min_angle>-3</min_angle>
+            <max_angle>3</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <!-- laser scaner has a measure distance range: hier the unit of 0.10 and 30.0 is meter -->
+          <min>0.10</min>
+          <max>30.0</max>
+          <!-- resolutio of distance: 0.01 m -->
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>   <!-- standard deviation of gaussian noise, this value is used for simulation -->
+        </noise>
+      </ray>
+      <plugin name="gazebo_rplidar" filename="libgazebo_ros_laser.so">
+        <topicName>/scan</topicName>  <!-- The topic of laser publisher-->
+        <frameName>laser</frameName>  <!-- This name "laser" is defined in file "demo07_car_laser.urdf.xacro" -->
+      </plugin>
+    </sensor>
+  </gazebo>
+
+</robot>

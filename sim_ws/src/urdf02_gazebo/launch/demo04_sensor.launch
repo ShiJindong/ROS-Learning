@@ -1,0 +1,13 @@
+<launch>
+    <!-- 添加点云坐标系到Kinect连杆坐标系的变换，因为点云坐标系相对于深度图像而言自带了一个视角翻滚 (x方向和z方向各转了90度)，我们需要纠正它 -->
+    <!-- 所以我们在kinect.xcaro文件中，将frameName改为纠正后的frame "support_depth" -->
+    <node pkg="tf2_ros" name="static_transform_publisher" type="static_transform_publisher" args="0 0 0 -1.57 0 -1.57 /support /support_depth" />
+
+    <!-- 启动 rivz -->
+    <node pkg="rviz" type="rviz" name="rviz_test" args="-d $(find urdf02_gazebo)/config/show_mycar_odom_laser_camera_pointcloud2.rviz" />
+
+    <!-- 启动机器人状态和关节状态发布节点 -->
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" />
+    <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" />
+
+</launch>

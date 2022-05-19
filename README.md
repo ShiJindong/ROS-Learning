@@ -4,14 +4,7 @@ Used ROS-Version: Melodic
 
 At first:
 
-      cd ros_ws
-      catkin_make
-      source devel/setup.bash
-      roscore
-  
-or
-      
-      cd tools_ws
+      cd <name>_ws
       catkin_make
       source devel/setup.bash
       roscore

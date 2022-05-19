@@ -1,0 +1,37 @@
+<launch>
+    <!-- 将 urdf 文件内容设置进参数服务器 -->
+    <!-- 方法一: 调用xacro生成的urdf文件 -->
+    <!-- <param name="robot_description" textfile="$(find urdf01_rviz)/urdf/xacro/demo05_car_base.urdf" /> -->
+    <!-- 方法二: 直接调用xacro文件 -->
+    <param name="robot_description" command="$(find xacro)/xacro $(find urdf01_rviz)/urdf/xacro/car.urdf.xacro" />
+
+    <!-- 启动 rivz -->
+    <node pkg="rviz" type="rviz" name="rviz_test" args="-d $(find urdf01_rviz)/config/show_mycar_control.rviz" />
+
+    <!-- 启动机器人状态和关节状态发布节点 -->
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" />
+    <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" />
+
+    <!-- 集成 arbotix 运动控制节点，并且加载参数 -->
+    <!-- arbotix 不仅可以驱动模拟的模型，还可以驱动实体机器人，这里选择驱动模型 -->
+    <node pkg="arbotix_python" type="arbotix_driver" name="driver" output="screen">
+        <rosparam command="load" file="$(find urdf01_rviz)/config/control.yaml" />
+        <param name="sim" value="true" />       
+    </node>
+    
+    <!-- 
+        输入指令: 
+        roslaunch urdf01_rviz demo07_control.launch 
+        rostopic pub -r 10 /cmd_vel geometry_msgTwist "linear:
+            x: 1.0
+            y: 0.0
+            z: 0.0
+        angular:
+            x: 0.0
+            y: 0.0
+            z: 1.0" 
+
+        将 Fixed Frame 改为 odom, 可观察到小车做圆周运动
+     -->
+
+</launch>

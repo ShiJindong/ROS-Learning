@@ -1,0 +1,50 @@
+<robot name="mycar">
+    <!-- 需求: 设置机器人底盘，并添加摄像头 -->
+    <!-- 1. 底盘link-->
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <box size="0.3 0.2 0.1" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <material name="car_color">
+                <color rgba="0.8 0.5 0 0.8" />
+            </material>
+
+        </visual>
+    </link>
+    <!-- 2. 摄像头link-->
+    <link name="camera">
+        <visual>
+            <geometry>
+                <box size="0.02 0.05 0.05" />
+            </geometry>
+            <!-- 先使用默认，后期可以修改 -->
+            <origin xyz="0 0 0.025" rpy="0 0 0" />
+            <material name="camera_color">
+                <color rgba="0 0 1 0.8" />
+            </material>
+        </visual>
+    </link>
+    <!-- 3. 底盘和摄像头之间的关节joint-->
+    <joint name="camera2base" type="continuous">
+        <!-- 父级link -->
+        <parent link="base_link" />
+        <!-- 子级link -->
+        <child link="camera" />
+        <!-- 设置偏移量 -->
+        <origin xyz="0.12 0 0.05" rpy="0 0 0" />
+        <!-- 设置关节旋转参考的坐标轴 -->
+        <axis xyz="0 0 1" />
+        <!-- 摄像头可绕z轴旋转 -->
+    </joint>
+    <!-- 
+        只有上述语句:
+            表现: 设置的显示位置和颜色异常
+            提示: No transform from [camera] to [base_link] 缺少camera到base_link的坐标变换
+            原因: rviz 中显示urdf时，必须发布不同部件之间的坐标系关系
+            解决: ROS提供了关于机器人模型显示的坐标发布相关节点(两个) 
+                 需要在launch文件中加入两个状态发布节点: 关节状态发布节点 和 机器人状态发布节点
+     -->
+
+</robot>

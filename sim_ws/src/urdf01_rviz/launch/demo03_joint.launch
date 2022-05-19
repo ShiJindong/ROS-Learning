@@ -1,0 +1,27 @@
+<launch>
+
+    <param name="robot_description" textfile="$(find urdf01_rviz)/urdf/urdf/demo03_joint.urdf" />
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find urdf01_rviz)/config/show_mycar.rviz" /> 
+
+    <!-- 
+        只有上述语句:
+            表现: 设置的显示位置和颜色异常
+            提示: No transform from [camera] to [base_link] 缺少camera到base_link的坐标变换
+            原因: rviz 中显示urdf时，必须发布不同部件之间的坐标系关系
+            解决: ROS提供了关于机器人模型显示的坐标发布相关节点(两个) 
+                 需要在launch文件中加入两个状态发布节点: 关节状态发布节点 和 机器人状态发布节点
+     -->
+
+    <!-- 添加关节状态发布节点 -->
+    <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" />
+    <!-- 添加机器人状态发布节点 -->
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" />
+    <!-- 可选:用于控制关节运动的节点,会生成关节控制的UI，用于测试关节运动是否正常 -->
+    <node pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" name="joint_state_publisher_gui" />
+
+
+    <!-- 注意: urdf文件中不能加入中文注释，否则会报错! -->
+
+
+
+</launch>
