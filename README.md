@@ -1,14 +1,6 @@
 # ROS-Learning
 ---
-Used ROS-Version: Melodic
-
-At first:
-
-      cd <name>_ws
-      catkin_make
-      source devel/setup.bash
-      roscore
-      
-Then rosrun rosnodes or roslaunch launch files.
+Used ROS1-Version: Noetic
+Used ROS2-Version: Foxy
 
 The executable rosnodes are implemented not only with C++ but also with Python.
