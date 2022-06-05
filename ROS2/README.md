@@ -8,6 +8,8 @@ At first:
       colcon build
       source install/setup.bash
       
-Then ros2 run <rosnodes>.
+Then  
+      
+      ros2 run "rosnode"
 
 The executable rosnodes are implemented not only with C++ but also with Python.
