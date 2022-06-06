@@ -10,8 +10,8 @@ At first:
       
 Then  
       
-      ros2 run "rosnode"
+      ros2 run "package name" "node name"
 
-The rosnodes "village_interfaces", "village_wang", "village_zhang" are implemented with C++.
+The packages "village_interfaces", "village_wang", "village_zhang" are implemented with C++.
 
-The rosnode "village_li" is implemented with Python.
+The package "village_li" is implemented with Python.
