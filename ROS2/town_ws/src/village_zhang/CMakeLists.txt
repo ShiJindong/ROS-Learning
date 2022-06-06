@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(village_wang)
+project(village_zhang)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -31,18 +31,17 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-ament_package()
-
-# add_executable(wang2_node src/wang2_pop.cpp)
-add_executable(wang2_node src/wang2_oop.cpp)
-
+add_executable(zhang3_node src/zhang3.cpp)
 ament_target_dependencies(
-  wang2_node 
-  rclcpp 
+  zhang3_node
+  rclcpp
   village_interfaces
-  )
+)
 
-install(TARGETS 
-  wang2_node 
+install(
+  TARGETS
+  zhang3_node
   DESTINATION lib/${PROJECT_NAME}
 )
+
+ament_package()

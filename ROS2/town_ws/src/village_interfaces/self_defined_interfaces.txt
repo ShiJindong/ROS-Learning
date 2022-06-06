@@ -1,0 +1,92 @@
+##### 如何自定义一个消息类型 ############################################################################################################
+
+1. 创建Interfaces功能包
+	在实际的工程当中，为了减少功能包互相之间的依赖，通常会将接口定义在一个独立的功能包中
+	所以这里新建一个叫做village_interfaces的功能包，并把所有ROS镇下的接口都定义在这个独立的功能包里
+	在town_ws的src文件夹下，运行下面的指令，即可完成village_interfaces功能包的创建 (目前自定义接口只支持编译类型ament_cmake)
+	ros2 pkg create village_interfaces --build-type ament_cmake 
+
+2. 创建消息文件
+	新建msg文件夹和Novel.msg(小说消息)
+	注意:msg文件开头首字母一定要大写，ROS2强制要求，原因应该是为了和类名保持一致
+
+3. 编写Novel.msg内容
+	我们的目的是给李四的小说每一章增加一张图片，原来李四写小说是对外发布一个std_msgs/msg/String字符串类型的数据。
+	而发布图片的格式，我们需要采用ros自带的传感器消息接口中的图片sensor_msgs/msg/Image数据类型，所以我们新的消息文件的内容就是将两者合并
+	我们既可以使用两个自定义的消息接口 std_msgs/String 和 sensor_msgs/Image 来实现
+	也可以使用一个自定义消息接口 sensor_msgs/Image 和 一个原始数据类型 string 结合来实现
+	这里使用了第二种方式
+
+4. 修改CMakeLists.txt
+我们还需要在CMakeLists.txt中告诉编译器，你要给我把Novel.msg转换成Python库和C++的头文件
+	#先要找到功能包 sensor_msgs(这是依赖) 和 rosidl_default_generators(用于生成自定义接口)
+	find_package(sensor_msgs REQUIRED)
+	find_package(rosidl_default_generators REQUIRED)
+	#添加消息文件和依赖
+	rosidl_generate_interfaces(
+	   ${PROJECT_NAME}
+	   "msg/Novel.msg"
+	   DEPENDENCIES sensor_msgs
+	)
+	 
+5. 修改package.xml
+为工程添加一下所需的依赖
+	  <depend>sensor_msgs</depend>
+	  <build_depend>rosidl_default_generators</build_depend>
+	  <exec_depend>rosidl_default_runtime</exec_depend>
+	  <member_of_group>rosidl_interface_packages</member_of_group>
+  
+6. 编译
+	colcon build --packages-select village_interfaces
+
+7. 验证
+	source install/setup.bash 	#必须source，否则找不到该自定义消息，因为该消息没有被安装到系统，只存在在该工作空间内
+	ros2 interface package village_interfaces  		#查看包下所有接口
+	ros2 interface show village_interfaces/msg/Novel 	#查看内容
+	ros2 interface proto village_interfaces/msg/Novel 	#显示属性
+	
+	
+	
+##### 如何自定义一个服务类型 #############################################################################################################
+
+1. 在village_interfaces功能包下，新建srv文件夹，并在文件夹下新建BorrowMoney.srv
+注意:srv文件开头首字母一定要大写，ROS2强制要求，原因应该是为了和类名保持一致
+
+2. 编写BorrowMoney.srv文件内容
+	string name
+	uint32 money
+	---
+	bool success
+	uint32 money
+	
+3. 修改CMakeLists.txt
+	find_package(rosidl_default_generators REQUIRED)
+	rosidl_generate_interfaces(${PROJECT_NAME}
+	  #---msg---
+	  "msg/Novel.msg"
+	  #---srv---
+	  "srv/BorrowMoney.srv"
+	  DEPENDENCIES sensor_msgs
+	 )
+	 
+4. 修改package.xml
+	之前我们已经添加过了，这里就不用添加了
+	
+5. 编译
+	colcon build --packages-select village_interfaces
+	
+6. 查看
+	source install/setup.bash 
+	ros2 interface package village_interfaces
+	ros2 interface show village_interfaces/srv/BorrowMoney
+	ros2 interface proto village_interfaces/srv/BorrowMoney 
+
+	
+	
+##### 我们可以查看系统内的所有自定义接口 ##################################################################################################
+	ros2 interface list					# 查看系统内已经定义好的自定义消息，服务，动作类型
+	ros2 interface packages				# 查看所有接口包
+	ros2 interface package std_msgs			# 查看某一个包下的所有接口
+	ros2 interface show sensor_msgs/msg/LaserScan		# 查看某一个接口详细的内容
+	ros2 interface proto sensor_msgs/msg/Image		# 输出某一个接口所有属性
+

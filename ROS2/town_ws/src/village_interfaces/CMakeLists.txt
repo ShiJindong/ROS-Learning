@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(village_wang)
+project(village_interfaces)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -17,8 +17,11 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-find_package(rclcpp REQUIRED)
-find_package(village_interfaces REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+# uncomment the following section in order to fill in
+# further dependencies manually.
+# find_package(<dependency> REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -31,18 +34,15 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-ament_package()
-
-# add_executable(wang2_node src/wang2_pop.cpp)
-add_executable(wang2_node src/wang2_oop.cpp)
-
-ament_target_dependencies(
-  wang2_node 
-  rclcpp 
-  village_interfaces
-  )
-
-install(TARGETS 
-  wang2_node 
-  DESTINATION lib/${PROJECT_NAME}
+# 使用函数rosidl_generate_interfaces根据所属工程名字，消息文件和所需依赖生成自定义消息
+# 使用该函数需要先用find_package找到功能包rosidl_default_generators
+# 我们消息中用到的依赖部分DEPENDENCIES这里必须写上，即使不写编译器也不会报错，直到运行的时候才会出错
+rosidl_generate_interfaces(
+  ${PROJECT_NAME}
+  "msg/Novel.msg"
+  "srv/BorrowMoney.srv"
+  "srv/SellNovel.srv"
+  DEPENDENCIES sensor_msgs
 )
+
+ament_package()

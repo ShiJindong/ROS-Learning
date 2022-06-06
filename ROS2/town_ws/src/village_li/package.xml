@@ -8,6 +8,9 @@
   <license>TODO: License declaration</license>
 
   <depend>rclpy</depend>
+  <!-- This code line forces that village_interfaces must be compiled in advance, otherwise the compile of village_li may fail -->
+  <!-- because village_li dependeds on service interface village_interfaces!!!-->
+  <depend>village_interfaces</depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

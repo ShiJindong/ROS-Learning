@@ -1,6 +1,8 @@
 import rclpy       # ros client library for python
 from rclpy.node import Node   # 加载rclpy中的Node类，用于接下来创建节点
 from std_msgs.msg import String,UInt32  # 从标准消息类型中加载String类型 和 32位无符号整型
+# 导入服务接口
+from village_interfaces.srv import BorrowMoney
 
 """ 
     创建工作空间
@@ -37,6 +39,27 @@ class WriterNode(Node):
         # 15. 声明并创建订阅者，这里用来收取稿费
         self.account = 80
         self.sub_money = self.create_subscription(UInt32,"sexy_girl_money",self.receive_money_callback,10)
+
+        # 声明并创建服务端
+        self.borrow_server = self.create_service(BorrowMoney,"borrow_money",self.borrow_money_callback)
+
+
+    # 创建服务端回调函数
+    def borrow_money_callback(self,request,responce):
+        # 编写回调函数逻辑处理请求
+        # request:
+        # responce:
+        self.get_logger().info("收到来自: %s的借钱请求,账户目前有: %d元" %(request.name,self.account))
+        if request.money <= self.account*0.1:
+            responce.success = True
+            responce.money = request.money
+            self.account -= request.money
+            self.get_logger().info("借钱成功，借出 %d元, 目前账户还剩下 %d元" %(responce.money,self.account))
+        else:
+            responce.success = False
+            responce.money = 0
+            self.get_logger().info("对不起，大兄弟，最近手头紧，不能借给你!")
+        return responce
 
     def timer_callback(self):
         msg = String()   
@@ -87,6 +110,14 @@ def main(args=None):
             15. 声明并创建订阅者，这里用来收取稿费
             16. 可通过terminal输入以下命令进行付款
                 ros2 topic pub /sexy_girl_money std_msgs/msg/UInt32 "{data: 10}" -1
+    """
+
+    """ 
+        服务端:
+            导入服务接口
+            创建服务端回调函数
+            声明并创建服务端
+            编写回调函数逻辑处理请求
     """
 
     # 2. 初始化客户端库
