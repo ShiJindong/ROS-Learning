@@ -1,6 +1,6 @@
 # ROS2-Learning
 ---
-Used ROS-Version: Foxy
+Used ROS2-Version: Foxy
 
 At first:
 
