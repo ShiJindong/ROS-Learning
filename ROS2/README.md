@@ -12,4 +12,6 @@ Then
       
       ros2 run "rosnode"
 
-The executable rosnodes are implemented not only with C++ but also with Python.
+The rosnodes "village_interfaces", "village_wang", "village_zhang" are implemented with C++.
+
+The rosnode "village_li" is implemented with Python.
