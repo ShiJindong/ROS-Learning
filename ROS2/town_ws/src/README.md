@@ -72,7 +72,7 @@ source:
 			ros2 param get /wang2 novel_price
 			
 			
-执行launch文件 (同时打开li4_node和wang2_node这两个节点，并设置参数和命名空间):
+执行launch文件 (该launch文件会同时打开li4_node和wang2_node这两个节点，并设置好参数和命名空间):
 
 	ament_python编译模式下使用python编写的launch文件:
 		ros2 launch village_li village.launch.py
