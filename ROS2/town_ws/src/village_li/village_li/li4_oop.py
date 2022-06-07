@@ -11,7 +11,7 @@ from village_interfaces.srv import BorrowMoney
     创建python版本的功能包
         ros2 pkg create village_li --build-type ament_python --dependencies rclpy
             kg create 是创建包的意思
-            --build-type 用来指定该包的编译类型，一共有三个可选项ament_python、ament_cmake、cmake
+            --build-type 用来指定该包的编译类型,一共有三个可选项ament_python、ament_cmake、cmake
             --dependencies 指的是这个功能包的依赖，这里给了一个ros2的python客户端接口rclpy
             如果build-type什么都不写，ros2会默认类型为ament_cmake.
     创建节点文件
@@ -34,7 +34,7 @@ class WriterNode(Node):
         self.count = 0
         # 定期发布小说
         self.timer_period = 5
-        self.timer = self.create_timer(self.timer_period,self.timer_callback)   # 每5秒调用一次回调函数
+        self.timer = self.create_timer(self.timer_period,self.timer_callback)   # 定时装置timer会每5秒调用一次回调函数
 
         # 15. 声明并创建订阅者，这里用来收取稿费
         self.account = 80
@@ -42,6 +42,9 @@ class WriterNode(Node):
 
         # 声明并创建服务端
         self.borrow_server = self.create_service(BorrowMoney,"borrow_money",self.borrow_money_callback)
+
+        # 声明参数
+        self.declare_parameter("writer_timer_period",5)
 
 
     # 创建服务端回调函数
@@ -62,6 +65,12 @@ class WriterNode(Node):
         return responce
 
     def timer_callback(self):
+        """ 
+        定时器回调函数
+        """
+        timer_period = self.get_parameter("writer_timer_period").get_parameter_value().integer_value
+        self.timer.timer_period_ns = timer_period * (1000 * 1000 * 1000)     # s  ->  ns
+
         msg = String()   
         # 由ros2 interface show std_msgs/msg/String可知String包含内容为data
         msg.data = "第%d回:潋滟湖 %d 次偶遇胡艳娘" % (self.count,self.count)  

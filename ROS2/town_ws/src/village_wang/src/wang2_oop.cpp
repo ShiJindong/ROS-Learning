@@ -48,6 +48,9 @@ private:
     // 书库
     std::queue<std::string> novels_queue;     // 用于存放二手书的容器
 
+    // 设置二手书的单价
+    unsigned int novel_price = 1;
+
     // ROS2中要使用多线程执行器和回调组来实现多线程，我们先在SingleDogNode中声明一个回调组
     rclcpp::CallbackGroup::SharedPtr sell_novels_callback_group;
 
@@ -87,8 +90,11 @@ private:
                     2. 同时需要在main函数中定义多线程执行器，来实现多线程
          */
         RCLCPP_INFO(this->get_logger(),"受到一个买书的请求,一共给了%d元",request->money);
+
+        // 获取最新的参数
+        this->get_parameter("novel_price", novel_price);
         // 计算应该返回给客户端的小说的数量
-        unsigned int num = static_cast<int>(request->money/(1.0));
+        unsigned int num = static_cast<int>(request->money/novel_price);
 
         if(num > novels_queue.size())
         {
@@ -155,6 +161,10 @@ public:
                     // 在创建服务端时使用回调组的好处是:
                     // 一旦接受到sell_novel的服务请求后，会单独开出线程，在回调组内执行回调函数sell_novel_callback，
                     // 而不影响原线程在接受到新的sexy_girl消息后，执行回调函数novel_callback
+
+        // 声明参数
+        this->declare_parameter<std::int64_t>("novel_price", novel_price);
+        // 注意: ros2定义的参数类型只支持 bool, int64, float64, string, byte 和 其对应的数组类型，不支持其他类型类型,比如uint64等
         
     }
 };
